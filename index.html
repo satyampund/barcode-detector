@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Barcode Scanner</title>
+  </head>
+  <body>
+    <input type="file" id="file-input" />
+    <div id="result"></div>
+
+    <script>
+      // Check if BarcodeDetector is supported by the browser
+      if (!('BarcodeDetector' in window)) {
+        console.log('Barcode Detector is not supported by this browser.');
+      } else {
+        console.log('Barcode Detector supported!');
+
+        // Create a new BarcodeDetector instance with the desired formats
+        const barcodeDetector = new BarcodeDetector({
+          formats: ['code_39', 'codabar', 'ean_13', 'qr_code'],
+        });
+
+        // Get the file input element
+        const fileInput = document.getElementById('file-input');
+
+        // Listen for changes to the file input and handle the uploaded image
+        fileInput.addEventListener('change', function (event) {
+          // Get the uploaded file
+          const file = event.target.files[0];
+
+          // Create a new FileReader instance to read the file
+          const reader = new FileReader();
+
+          // When the FileReader instance has finished loading the file
+          reader.onload = function () {
+            // Create a new image element and set its source to the uploaded file
+            const img = new Image();
+            img.src = reader.result;
+
+            // When the image has loaded, use BarcodeDetector to detect barcodes
+            img.onload = async function () {
+              try {
+                // Detect barcodes in the image
+                const barcodes = await barcodeDetector.detect(img);
+
+                // If any barcodes were detected, log their values to the console and show the first barcode's value on the page
+                if (barcodes.length > 0) {
+                  console.log(barcodes.map((barcode) => barcode.rawValue));
+                  document.getElementById('result').innerHTML = barcodes[0].rawValue;
+                } else {
+                  console.log('No barcodes found in the image.');
+                  document.getElementById('result').innerHTML = 'No barcodes found in the image.';
+                }
+              } catch (error) {
+                console.error(error);
+                document.getElementById('result').innerHTML = 'Error: ' + error.message;
+              }
+            };
+          };
+
+          // Read the uploaded file as a data URL
+          reader.readAsDataURL(file);
+        });
+      }
+    </script>
+  </body>
+</html>
