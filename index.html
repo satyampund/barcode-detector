@@ -39,9 +39,7 @@
         // Get the file input element
         const fileInput = document.getElementById('file-input');
 
-        // Listen for changes to the file input and handle the uploaded image
         fileInput.addEventListener('change', function (event) {
-          // Get the uploaded file
           const file = event.target.files[0];
 
           // Create a new FileReader instance to read the file
@@ -54,19 +52,15 @@
 
             img.onload = async function () {
               try {
-                // Detect barcodes in the image
                 const barcodes = await barcodeDetector.detect(img);
 
-                // If any barcodes were detected, log their values to the console and show the first barcode's value on the page
                 if (barcodes.length > 0) {
-                  console.log(barcodes.map((barcode) => barcode.rawValue));
                   document.getElementById('result').innerHTML = barcodes[0].rawValue;
                 } else {
                   console.log('No barcodes found in the image.');
                   document.getElementById('result').innerHTML = 'No barcodes found in the image.';
                 }
               } catch (error) {
-                console.error(error);
                 document.getElementById('result').innerHTML = 'Error: ' + error.message;
               }
             };
