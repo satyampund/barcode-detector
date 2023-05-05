@@ -11,7 +11,6 @@
       </div>
       <input type="file" id="file-input" />
       <div id="result"></div>
-      <div id="previous-data"></div>
     </div>
 
     <script>
@@ -42,7 +41,6 @@
 
         // Get the file input element
         const fileInput = document.getElementById('file-input');
-        const previousData = document.getElementById('previous-data');
 
         fileInput.addEventListener('change', function (event) {
           const file = event.target.files[0];
@@ -67,25 +65,15 @@
                 context.drawImage(img, 0, 0, myDiv.clientWidth, myDiv.clientHeight);
 
                 if (barcodes.length > 0) {
-                  const barcodeValue = barcodes[0].rawValue;
-                  document.getElementById('result').innerHTML = barcodeValue;
-
-                  const successCount = Number(localStorage.getItem('successCount')) || 0;
-                  localStorage.setItem('successCount', successCount + 1);
+                  document.getElementById('result').innerHTML = barcodes[0].rawValue;
                 } else {
                   console.log('No barcodes found in the image.');
-                  const failureCount = Number(localStorage.getItem('failureCount')) || 0;
-                  localStorage.setItem('failureCount', failureCount + 1);
                   document.getElementById('result').innerHTML = 'No barcodes found in the image.';
                 }
               } catch (error) {
                 document.getElementById('result').innerHTML = 'Error: ' + error.message;
               }
             };
-
-            previousData.innerHTML = `Total Scans: ${
-              successCount + failureCount
-            }, Success: ${successCount}, Failure: ${failureCount}`;
           };
           reader.readAsDataURL(file);
         });
