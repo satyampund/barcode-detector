@@ -28,3 +28,8 @@ body {
 .container {
   display: block;
 }
+
+#my-div {
+  width: 50vw;
+  height: 50vh;
+}

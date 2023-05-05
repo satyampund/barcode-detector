@@ -6,7 +6,9 @@
   </head>
   <body>
     <div class="container">
-      <canvas id="canvas" width="500px" height="500px"></canvas>
+      <div id="my-div">
+        <canvas id="canvas"></canvas>
+      </div>
       <input type="file" id="file-input" />
       <div id="result"></div>
     </div>
@@ -50,12 +52,15 @@
           reader.onload = function () {
             const canvas = document.getElementById('canvas');
             const context = canvas.getContext('2d');
+            const myDiv = document.getElementById('my-div');
 
             const img = new Image();
             img.src = reader.result;
 
             img.onload = async function () {
               try {
+                canvas.width = myDiv.clientWidth;
+                canvas.height = myDiv.clientHeight;
                 const barcodes = await barcodeDetector.detect(img);
                 context.drawImage(img, 0, 0);
 
