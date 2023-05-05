@@ -56,8 +56,10 @@
 
             img.onload = async function () {
               try {
+                canvas.width = img.width;
+                canvas.height = img.height;
                 const barcodes = await barcodeDetector.detect(img);
-                context.drawImage(img, 0, 0);
+                context.drawImage(img, 0, 0, img.width, img.height);
 
                 if (barcodes.length > 0) {
                   document.getElementById('result').innerHTML = barcodes[0].rawValue;
