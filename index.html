@@ -62,7 +62,7 @@
                 canvas.width = myDiv.clientWidth;
                 canvas.height = myDiv.clientHeight;
                 const barcodes = await barcodeDetector.detect(img);
-                context.drawImage(img, 0, 0);
+                context.drawImage(img, 0, 0, myDiv.clientWidth, myDiv.clientHeight);
 
                 if (barcodes.length > 0) {
                   document.getElementById('result').innerHTML = barcodes[0].rawValue;
