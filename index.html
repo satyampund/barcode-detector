@@ -6,6 +6,7 @@
   </head>
   <body>
     <div class="container">
+      <canvas id="canvas" width="400" height="400"></canvas>
       <input type="file" id="file-input" />
       <div id="result"></div>
     </div>
@@ -47,12 +48,16 @@
 
           // When the FileReader instance has finished loading the file
           reader.onload = function () {
+            const canvas = document.getElementById('canvas');
+            const context = canvas.getContext('2d');
+
             const img = new Image();
             img.src = reader.result;
 
             img.onload = async function () {
               try {
                 const barcodes = await barcodeDetector.detect(img);
+                context.drawImage(img, 0, 0);
 
                 if (barcodes.length > 0) {
                   document.getElementById('result').innerHTML = barcodes[0].rawValue;
