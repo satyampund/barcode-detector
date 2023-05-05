@@ -71,24 +71,21 @@
                   document.getElementById('result').innerHTML = barcodeValue;
 
                   const successCount = Number(localStorage.getItem('successCount')) || 0;
-                  const failureCount = Number(localStorage.getItem('failureCount')) || 0;
-
-                  if (barcodeValue) {
-                    localStorage.setItem('successCount', successCount + 1);
-                  } else {
-                    localStorage.setItem('failureCount', failureCount + 1);
-                  }
-                  previousData.innerHTML = `Total Scans: ${
-                    successCount + failureCount
-                  }, Success: ${successCount}, Failure: ${failureCount}`;
+                  localStorage.setItem('successCount', successCount + 1);
                 } else {
                   console.log('No barcodes found in the image.');
+                  const failureCount = Number(localStorage.getItem('failureCount')) || 0;
+                  localStorage.setItem('failureCount', failureCount + 1);
                   document.getElementById('result').innerHTML = 'No barcodes found in the image.';
                 }
               } catch (error) {
                 document.getElementById('result').innerHTML = 'Error: ' + error.message;
               }
             };
+
+            previousData.innerHTML = `Total Scans: ${
+              successCount + failureCount
+            }, Success: ${successCount}, Failure: ${failureCount}`;
           };
           reader.readAsDataURL(file);
         });
