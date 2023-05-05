@@ -27,11 +27,11 @@ body {
 
 .container {
   display: block;
-  margin-bottom: 10px;
-  border: 1px solid black;
 }
 
 #my-div {
   width: 90vw;
   height: 40vh;
+  margin-bottom: 15px;
+  border: 1px solid black;
 }
