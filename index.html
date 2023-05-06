@@ -11,6 +11,11 @@
       </div>
       <input type="file" id="file-input" />
       <div id="result"></div>
+      <div>
+        Total Scans: <span id="total-scans"></span><br />
+        Successful Scans: <span id="successful-scans"></span><br />
+        Unsuccessful Scans: <span id="unsuccessful-scans"></span>
+      </div>
     </div>
 
     <script>
@@ -42,6 +47,16 @@
         // Get the file input element
         const fileInput = document.getElementById('file-input');
 
+        // Load the scan counts from local storage
+        let totalScans = localStorage.getItem('totalScans') || 0;
+        let successfulScans = localStorage.getItem('successfulScans') || 0;
+        let unsuccessfulScans = localStorage.getItem('unsuccessfulScans') || 0;
+
+        // Update the scan count elements with the initial values
+        document.getElementById('total-scans').textContent = totalScans;
+        document.getElementById('successful-scans').textContent = successfulScans;
+        document.getElementById('unsuccessful-scans').textContent = unsuccessfulScans;
+
         fileInput.addEventListener('change', function (event) {
           const file = event.target.files[0];
 
@@ -66,10 +81,27 @@
 
                 if (barcodes.length > 0) {
                   document.getElementById('result').innerHTML = barcodes[0].rawValue;
+                  // Update successful scans count
+                  successfulScans++;
                 } else {
                   console.log('No barcodes found in the image.');
                   document.getElementById('result').innerHTML = 'No barcodes found in the image.';
+                  // Update unsuccessful scans count
+                  unsuccessfulScans++;
                 }
+
+                // Update total scans count
+                totalScans++;
+
+                // Update the scan count elements with the updated values
+                document.getElementById('total-scans').textContent = totalScans;
+                document.getElementById('successful-scans').textContent = successfulScans;
+                document.getElementById('unsuccessful-scans').textContent = unsuccessfulScans;
+
+                // Store the updated scan counts in local storage
+                localStorage.setItem('totalScans', totalScans);
+                localStorage.setItem('successfulScans', successfulScans);
+                localStorage.setItem('unsuccessfulScans', unsuccessfulScans);
               } catch (error) {
                 document.getElementById('result').innerHTML = 'Error: ' + error.message;
               }
